@@ -61,3 +61,42 @@ Task:
 
 ---
 Good luck 🚀
+
+
+     ANSWERS TO TASK
+QUESTION ONE:
+
+SELECT OrderID, CustomerName, Product
+FROM ProductDetail
+CROSS APPLY STRING_SPLIT(Products, ',') AS Product
+
+QUESTION TWO:
+
+1.CREATE CUSTOMER TABLE.
+
+CREATE TABLE Customers (
+    OrderID INT PRIMARY KEY,
+    CustomerName VARCHAR(255)
+);
+
+2.CREATE ORDERDETAILS TABLE.
+
+CREATE TABLE OrderDetails (
+    OrderID INT,
+    Product VARCHAR(255),
+    Quantity INT,
+    PRIMARY KEY (OrderID, Product),
+    FOREIGN KEY (OrderID) REFERENCES Customers(OrderID)
+);
+
+3.INSERT DATA INTO NEW TABLE.
+
+-- Insert into Customers table
+INSERT INTO Customers (OrderID, CustomerName)
+SELECT DISTINCT OrderID, CustomerName
+FROM OrderDetails;
+
+-- Insert into OrderDetails table (without CustomerName)
+INSERT INTO OrderDetails (OrderID, Product, Quantity)
+SELECT OrderID, Product, Quantity
+FROM OrderDetails;
